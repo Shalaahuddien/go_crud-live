@@ -1,0 +1,27 @@
+version: '23.0.1'
+
+services:
+  go-app:
+    container_name: go-app
+    image: francescoxx/go-app:1.0.0
+    build: .
+    environment:
+      DATABASE_URL: "host=go_db user=postgres password=1234567 dbname=postgres sslmode=disable"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - go_db
+  go_db:
+    container_name: go-app
+    image: postgres:15.2
+    environment:
+     POSTGRES_PASSWORD: 1234567
+     POSTGRES_USER: postgres
+     POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+ pgdata: {}
